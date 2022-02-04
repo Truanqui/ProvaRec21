@@ -4,15 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "tb_autor")
-public class Autor {
+public class Autor  implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +21,32 @@ public class Autor {
     private String nomeAutor;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Livro> livros = new ArrayList<>();
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    private List<Livro> livroAutor = new ArrayList<>();
 
-    public Autor(Autor entity){
-        idAutor = entity.getIdAutor();
-        nomeAutor = entity.getNomeAutor();
+    public Autor(){
+    }
+    public Autor(Long idAutor, String nomeAutor){
+        this.idAutor = idAutor;
+        this.nomeAutor = nomeAutor;
+    }
+
+    public Long getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(Long idAutor) {
+        this.idAutor = idAutor;
+    }
+
+    public String getNomeAutor() {
+        return nomeAutor;
+    }
+
+    public void setNomeAutor(String nomeAutor) {
+        this.nomeAutor = nomeAutor;
+    }
+    public List<Livro> getLivroAutor(){
+        return livroAutor;
     }
 }

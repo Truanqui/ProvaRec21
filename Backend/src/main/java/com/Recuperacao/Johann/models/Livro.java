@@ -4,51 +4,83 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "tb_livro")
-public class Livro {
+public class Livro implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLivro;
     private String nomeLivro;
-    private String idCategoria;
-    private String idEditora;
-    private String idAutor;
-    private String idAreaDeConhecimentoLivro;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "idCategoria")
     private Categoria categoria;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "idEditora")
     private Editora editora;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "idAutor")
     private Autor autor;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idAreaDeConhecimentoLivro")
-    private AreaDeConhecimentoLivro areaDeConhecimentoLivro;
+    public Livro(){
+    }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Exemplar> exemplares = new ArrayList<>();
+    public Livro(Long idLivro,String nomeLivro,Categoria categoria,Editora editora,Autor autor){
+        this.idLivro = idLivro;
+        this.nomeLivro = nomeLivro;
+        this.categoria = categoria;
+        this.editora = editora;
+        this.autor =  autor;
+    }
 
-    public Livro(Livro entity){
-        idLivro = entity.getIdLivro();
-        nomeLivro = entity.getNomeLivro();
-        categoria = entity.getCategoria();
-        editora = entity.getEditora();
-        autor = entity.getAutor();
-        areaDeConhecimentoLivro = entity.getAreaDeConhecimentoLivro();
+    public Long getIdLivro() {
+        return idLivro;
+    }
+
+    public void setIdLivro(Long idLivro) {
+        this.idLivro = idLivro;
+    }
+
+    public String getNomeLivro() {
+        return nomeLivro;
+    }
+
+    public void setNomeLivro(String nomeLivro) {
+        this.nomeLivro = nomeLivro;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Editora getEditora() {
+        return editora;
+    }
+
+    public void setEditora(Editora editora) {
+        this.editora = editora;
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
 }
